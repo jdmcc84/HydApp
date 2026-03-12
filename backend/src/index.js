@@ -11,8 +11,19 @@ const app = express()
 app.use(express.json())
 
 // CORS: allow your local Vite dev and (later) your Vercel frontend
-const allowedOrigin = process.env.ORIGIN || 'http://localhost:5173'
-app.use(cors({ origin: allowedOrigin }))
+
+const allowedOrigins = [
+  process.env.ORIGIN,          // e.g. https://hyd-app.vercel.app (prod)
+  process.env.ORIGIN_PREVIEW,  // e.g. https://hyd-fjzmoep9y-jdmcc84s-projects.vercel.app (preview)
+  'http://localhost:5173'      // dev
+].filter(Boolean);
+
+
+
+// TEMP: allow all origins (remove as soon as verified!)
+app.use(cors());
+
+
 
 // --- Health ---
 app.get('/api/health', (_req, res) => {
